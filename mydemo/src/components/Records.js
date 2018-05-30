@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import Record from './Record';
-import {getJSON} from 'jquery';
+import axios from 'axios';
 
 class Records extends Component {
   constructor() {
@@ -12,15 +12,16 @@ class Records extends Component {
     }
   }
   componentDidMount(){
-    getJSON("https://5b0d18bf8126c9001499756a.mockapi.io/api/v1/record").then(
-      response => this.setState({records:response,isLoad:true}),
+    axios.get("https://5b0d18bf8126c9001499756a.mockapi.io/api/v1/record").then(
+      response => this.setState({records:response.data,isLoad:true})
+    ).catch(
       error =>this.setState({isLoad:true,error})
     )
   }
   render() {
     const {error, isLoad, records}=this.state;
     if(error){
-      return <div>Error:{error.responseText}</div>
+      return <div>Error:{error.message}</div>
     }else if(!isLoad){
       return <div>Loading ...</div>
     }else{
