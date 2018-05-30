@@ -1,8 +1,8 @@
 import React, { Component } from 'react';
 import Record from './Record';
-import axios from 'axios';
+import * as ccgRecordsAPI from '../utils/ccgdataAPI'
 
-class Records extends Component {
+export default class Records extends Component {
   constructor() {
     super();
     this.state={
@@ -12,7 +12,7 @@ class Records extends Component {
     }
   }
   componentDidMount(){
-    axios.get("https://5b0d18bf8126c9001499756a.mockapi.io/api/v1/record").then(
+    ccgRecordsAPI.getAll().then(
       response => this.setState({records:response.data,isLoad:true})
     ).catch(
       error =>this.setState({isLoad:true,error})
@@ -46,4 +46,3 @@ class Records extends Component {
   }
 }
 
-export default Records;
