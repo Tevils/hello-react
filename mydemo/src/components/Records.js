@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import Record from './Record';
+import RecordForm from './RecordForm';
 import * as ccgRecordsAPI from '../utils/ccgdataAPI'
 
 export default class Records extends Component {
@@ -20,29 +21,34 @@ export default class Records extends Component {
   }
   render() {
     const {error, isLoad, records}=this.state;
+    let recordsComponent;
     if(error){
-      return <div>Error:{error.message}</div>
+      recordsComponent=<div>Error:{error.message}</div>
     }else if(!isLoad){
-      return <div>Loading ...</div>
+      recordsComponent=<div>Loading ...</div>
     }else{
-      return (
-        <div>
-          <h2>Records</h2>
-          <table className="table table-bordered">
-            <thead>
-              <tr>
-                <th>Date</th>
-                <th>Title</th>
-                <th>Amount</th>          
-              </tr>
-            </thead>
-            <tbody>
-              {records.map((record)=><Record  key={record.id} {...record}/>)}
-            </tbody>
-          </table>
-        </div>
+      recordsComponent= (
+        <table className="table table-bordered">
+          <thead>
+            <tr>
+              <th>Date</th>
+              <th>Title</th>
+              <th>Amount</th>          
+            </tr>
+          </thead>
+          <tbody>
+            {records.map((record)=><Record  key={record.id} {...record}/>)}
+          </tbody>
+        </table>
       );
     }
+    return (
+      <div>
+        <h2>Records</h2>
+        <RecordForm />
+        {recordsComponent}
+      </div>
+    );
   }
 }
 
