@@ -11,13 +11,23 @@ export default class Records extends Component {
       isLoad:false,
       records:[]
     }
-  }
+  };
   componentDidMount(){
     ccgRecordsAPI.getAll().then(
       response => this.setState({records:response.data,isLoad:true})
     ).catch(
       error =>this.setState({isLoad:true,error})
     )
+  };
+  addRecord(record){
+    this.setState({
+      error:null,
+      isLoad:true,
+      records:[
+        ...this.state.records,
+        record
+      ]
+    })
   }
   render() {
     const {error, isLoad, records}=this.state;
@@ -45,7 +55,7 @@ export default class Records extends Component {
     return (
       <div>
         <h2>Records</h2>
-        <RecordForm />
+        <RecordForm handleNewRecord={this.addRecord.bind(this)} />
         {recordsComponent}
       </div>
     );
