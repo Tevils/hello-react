@@ -3,3 +3,4 @@ const api=process.env.REACT_APP_CCG_RECORDS_API_URL || "https://5b0d18bf8126c900
 
 export const getAll = () => axios.get(`${api}/api/v1/record`);
 export const create = (body) => axios.post(`${api}/api/v1/record`,body);
+export const update = (id,body) => axios.put(`${api}/api/v1/record/${id}`,body);
