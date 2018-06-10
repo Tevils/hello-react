@@ -1,7 +1,8 @@
 import React, { Component } from 'react';
 import Record from './Record';
 import RecordForm from './RecordForm';
-import * as ccgRecordsAPI from '../utils/ccgdataAPI'
+import * as ccgRecordsAPI from '../utils/ccgdataAPI';
+import AmountBox from './AmountBox';
 
 export default class Records extends Component {
   constructor() {
@@ -53,6 +54,25 @@ export default class Records extends Component {
       records:newRecords
     });
   };
+  credit(){
+    let credit=this.state.records.filter((record)=>{
+      return record.amount>=0;
+    });
+    return credit.reduce((prev,curr)=>{
+      return prev+Number.parseInt(curr.amount,0);
+    },0)
+  };
+  debit(){
+    let debit=this.state.records.filter((record)=>{
+      return record.amount<0;
+    });
+    return debit.reduce((prev,curr)=>{
+      return prev+Number.parseInt(curr.amount,0);
+    },0)
+  };
+  balance (){
+    return this.credit()+this.debit();
+  };
   render() {
     const {error, isLoad, records}=this.state;
     let recordsComponent;
@@ -86,6 +106,11 @@ export default class Records extends Component {
     return (
       <div>
         <h2>Records</h2>
+        <div className="row mb-3">
+          <AmountBox text="Credit" amount={this.credit()} />
+          <AmountBox text="Debit" amount={this.debit()} />
+          <AmountBox text="Balance" amount={this.balance()} />
+        </div>
         <RecordForm handleNewRecord={this.addRecord.bind(this)} />
         {recordsComponent}
       </div>
